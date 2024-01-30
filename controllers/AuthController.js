@@ -8,8 +8,10 @@ exports.register = async (req, res) => {
       $or: [{ email }, { username }],
     });
 
-    if (existingUser) {
-      return res.status(400).send({ message: "User already exists" });
+    if (existingUser.username === username) {
+      return res.status(400).send({ message: "Username already registered" });
+    } else if (existingUser.email === email) {
+      return res.status(400).send({ message: "Email already registered" });
     }
 
     const hashedPassword = bycrypt.hashSync(password, 10);
