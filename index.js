@@ -2,10 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
-
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 const UserModel = require("./models/User");
 const userRoutes = require("./routes/UserRoutes");
 const authRoutes = require("./routes/AuthRoutes");
+
 mongoose
   .connect("mongodb://localhost:27017/auth")
   .then(() => {
@@ -14,6 +16,24 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+const store = new MongoDBStore({
+  uri: "mongodb://localhost:27017/auth",
+  collection: "sessions",
+  expires: 12 * 60 * 60 * 1000,
+});
+
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
+
+// app.use()
+
 app.use(express.json());
 app.use(
   cors({
