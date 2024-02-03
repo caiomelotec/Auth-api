@@ -1,3 +1,25 @@
+const UserModel = require("../models/User");
+
 exports.hello = (req, res) => {
   res.send("TEST IT IS WORKING...");
+};
+
+exports.updateUser = async (req, res) => {
+  const userId = req.session.userId;
+
+  console.log(userId);
+
+  try {
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { _id: userId },
+      { $set: req.body }
+    );
+
+    if (updatedUser) {
+      res.status(200).send({ message: "User updated successfully!" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Something went wrong!" });
+  }
 };
