@@ -7,7 +7,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const UserModel = require("./models/User");
 const userRoutes = require("./routes/UserRoutes");
 const authRoutes = require("./routes/AuthRoutes");
-
+const languageRoutes = require("./routes/LanguageRoutes");
 mongoose
   .connect("mongodb://localhost:27017/auth")
   .then(() => {
@@ -49,6 +49,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/language", languageRoutes);
 
 app.listen(8080, () => {
   console.log("Server running on port 8080");
