@@ -13,8 +13,12 @@ router.get(
   verifyUser,
   languageControllers.fetchCardByUserAndLanguageId
 );
-
 router.post("/addlanguage", verifyUser, languageControllers.addLanguage);
 router.post("/addcard", verifyUser, languageControllers.addCard);
 router.delete("/card/:id", verifyUser, languageControllers.deleteCard);
+router.delete(
+  "/lang/:languageId",
+  verifyUser,
+  languageControllers.deleteLanguage
+);
 module.exports = router;

@@ -74,3 +74,25 @@ exports.deleteCard = async (req, res) => {
     res.status(500).send({ message: "error in deleting card" });
   }
 };
+
+exports.deleteLanguage = async (req, res) => {
+  const id = req.params.languageId;
+  try {
+    const result = await languageModel.findOneAndDelete({ _id: id });
+    if (result) {
+      const deletedCard = await Card.deleteMany({ languageId: id });
+      if (deletedCard.deletedCount > 0) {
+        res.status(200).send({
+          message: "Language and associated cards deleted successfully",
+        });
+      } else {
+        res.send({ message: "No cards found for the deleted language" });
+      }
+    } else {
+      res.status(404).send({ message: "Language not found" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Error in deleting language" });
+  }
+};
