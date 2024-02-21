@@ -8,6 +8,13 @@ router.get(
   verifyUser,
   languageControllers.fetchLanguagesByUserId
 );
-router.post("/addlanguage", verifyUser, languageControllers.addLanguage);
+router.get(
+  "/card/:languageId",
+  verifyUser,
+  languageControllers.fetchCardByUserAndLanguageId
+);
 
+router.post("/addlanguage", verifyUser, languageControllers.addLanguage);
+router.post("/addcard", verifyUser, languageControllers.addCard);
+router.delete("/card/:id", verifyUser, languageControllers.deleteCard);
 module.exports = router;
